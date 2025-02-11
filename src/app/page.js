@@ -49,7 +49,6 @@ export default function Home() {
         </div>
 
 
-
         {/* baruun tal */}
         <div className="w-[50%] h-[1100px] bg-gray-900 absolute right-px top-px flex justify-center items-center pt-2 ">
 
@@ -84,7 +83,7 @@ export default function Home() {
           <img className="w-11 h-21" src="right.webp"></img>
         </div>
       </div>
-      
+
       <div className="absolute inset-0 flex justify-center items-center">
         <div className="w-[340px] h-[340px] absolute rounded-full border-solid border-[1px]"></div>
         <div className="w-[540px] h-[540px] absolute rounded-full border-solid border-[1px]"></div>
