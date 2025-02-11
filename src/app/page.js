@@ -90,7 +90,6 @@ export default function Home() {
         <div className="w-[540px] h-[540px] absolute rounded-full border-solid border-[1px]"></div>
         <div className="w-[940px] h-[940px] absolute rounded-full border-solid border-[1px]"></div>
       </div>
-    
     </div>
   );
 }
