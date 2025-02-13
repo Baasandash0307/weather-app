@@ -3,26 +3,18 @@ import { useEffect, useState } from "react";
 
 
 export default function Home() {
+  const [countries, setCountries] = useState();
+  cosnt [number, setNumber] = useState(0);
 
-  const [weatherData, setWeatherData] = useState(false);
+  useEffect(() => {
+    const getData = async () => {
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries')
 
-  const search = async (city) => {
-    try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
-
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data);
-      
-      setWeatherData({
-        temperature: Math.floor(data.main.temperature),
-        location: data.name
-      })
-
-    } catch (error) {
-
+      const countries = await response.json();
+      setCountries(countries.data)
     }
-  }
+    getData()
+  }, [])
 
   return (
     <div className="relative h-screen overflow-hidden">
@@ -60,7 +52,7 @@ export default function Home() {
               <img src="sun.png" className="w-[274px] h-[274px] mt-[30px]"></img>
             </div>
             <div className="flex justify-center">
-              <p className="text-[120px] font-extrabold mt-[20px]">-26°</p>
+              <p className="text-[120px] font-extrabold mt-[20px]">-16°</p>
             </div>
             <p className="text-[#777CCE] font-bold">Freezing fog</p>
             <div className="flex justify-between mt-[40px]">
