@@ -1,4 +1,29 @@
+'use client'
+import { useEffect, useState } from "react";
+
+
 export default function Home() {
+
+  const [weatherData, setWeatherData] = useState(false);
+
+  const search = async (city) => {
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      
+      setWeatherData({
+        temperature: Math.floor(data.main.temperature),
+        location: data.name
+      })
+
+    } catch (error) {
+
+    }
+  }
+
   return (
     <div className="relative h-screen overflow-hidden">
 
@@ -8,7 +33,7 @@ export default function Home() {
 
           <img className="absolute left-[280px] top-[90px]" src="day.png"></img>
 
-          <div className="w-[567px] h-[80px] rounded-[48px] bg-white flex absolute left-[200px] top-[60px] shadow-xl ">
+          <div className="w-[567px] h-[80px] rounded-[48px] bg-white flex absolute left-[200px] top-[60px] shadow-xl z-10">
             <svg className="bg-white rounded-[48px] relative top-[16px] left-5"
               xmlns="http://www.w3.org/2000/svg"
               width="48"
@@ -23,7 +48,7 @@ export default function Home() {
                 />
               </g>
             </svg>
-            <input className="bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none" type="search" placeholder="Search"></input>
+            <input className="bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10" type="search" placeholder="Search"></input>
           </div>
 
           {/* Day container */}
@@ -63,7 +88,7 @@ export default function Home() {
               <img src="moon.png" className="w-[274px] h-[274px] mt-[30px]"></img>
             </div>
             <div className="flex justify-center">
-              <p className="text-[120px] text-gray-300 font-extrabold mt-[20px]">-26°</p>
+              <p className="text-[120px] text-gray-300 font-extrabold mt-[20px]">-16°</p>
             </div>
             <p className="text-[#FF8E27] font-bold">Freezing fog</p>
             <div className="flex justify-between mt-[40px]">
