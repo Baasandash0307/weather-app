@@ -53,9 +53,11 @@ export default function Home() {
               </g>
             </svg>
             <input className=" py-2 px-1 bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10" type="search" placeholder="Search" onChange={onChangeSearchValue}></input>
-          <div className="absolute w-[567px] h-[227px] z-20 top-[200px] backdrop-blur-[12px] bg-white">
-            <div>{filteredCountries.map((country, index) => <div key={country + index}>{country}</div>)}</div>
-          </div>
+            
+            <div className="absolute z-20 bg-white">
+              <div>{filteredCountries.map((country, index) => <div key={country + index}>{country}</div>)}</div>
+            
+            </div>
           </div>
 
 
