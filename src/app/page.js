@@ -3,18 +3,30 @@ import { useEffect, useState } from "react";
 
 
 export default function Home() {
-  const [countries, setCountries] = useState();
-  cosnt [number, setNumber] = useState(0);
+  const [countries, setCountries] = useState([]);
+  const [filteredCountries, setfilteredCountries] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       const response = await fetch('https://countriesnow.space/api/v0.1/countries')
 
       const countries = await response.json();
-      setCountries(countries.data)
+
+      const arr = [];
+      countries.data.map(country => {
+        country.cities.map(city => arr.push((`${city}, ${country.country}`).toLowerCase()))
+      })
+      setCountries(arr);
     }
     getData()
   }, [])
+
+  const onChangeSearchValue = (e) => {
+    const data = countries.filter(country => country.toLowerCase().startsWith(e.target.value)).slice(0, 4)
+
+    setfilteredCountries(data);
+  }
+
 
   return (
     <div className="relative h-screen overflow-hidden">
@@ -23,7 +35,7 @@ export default function Home() {
         {/* zuun tal */}
         <div className="w-[50%] h-[1100px] bg-white flex justify-center items-center pt-2">
 
-          <img className="absolute left-[280px] top-[90px]" src="day.png"></img>
+          <img className="absolute left-[280px] top-[90px] bg-" src="day.png"></img>
 
           <div className="w-[567px] h-[80px] rounded-[48px] bg-white flex absolute left-[200px] top-[60px] shadow-xl z-10">
             <svg className="bg-white rounded-[48px] relative top-[16px] left-5"
@@ -40,8 +52,12 @@ export default function Home() {
                 />
               </g>
             </svg>
-            <input className="bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10" type="search" placeholder="Search"></input>
+            <input className=" py-2 px-1 bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10" type="search" placeholder="Search" onChange={onChangeSearchValue}></input>
+          <div className="absolute w-[567px] h-[227px] z-20 top-[200px] backdrop-blur-[12px] bg-white">
+            <div>{filteredCountries.map((country, index) => <div key={country + index}>{country}</div>)}</div>
           </div>
+          </div>
+
 
           {/* Day container */}
           <div className="w-[414px] h-[828px] rounded-[50px] backdrop-blur-[12px] shadow-xl p-[40px] z-10">
