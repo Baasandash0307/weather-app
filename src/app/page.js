@@ -2,10 +2,15 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
+<<<<<<< HEAD
   const [cities, setCities] = useState([]);
   const [filteredCountries, setfilteredCountries] = useState([]);
   const [currentWeather, setCurrentWeather] = useState(null);
   const [selectedCity, useSelectedCity] = useState('ulaanbaatar')
+=======
+  const [countries, setCountries] = useState([]);
+  const [filteredCountries, setfilteredCountries] = useState([]);
+>>>>>>> 6fbfe4d037e9548fec847c64231a6f00a8b4c19c
 
   useEffect(() => {
     const getSelectedCityWeather = async () => {
@@ -25,6 +30,7 @@ export default function Home() {
       const countries = await response.json();
 
       const arr = [];
+<<<<<<< HEAD
 
       countries.data.map((country) => {
         country.cities.map((city) => [arr.push(`${city}, ${country.country}`)]);
@@ -39,6 +45,12 @@ export default function Home() {
     if (event.target.value == "") {
       setfilteredCountries([]);
       return;
+=======
+      countries.data.map(country => {
+        country.cities.map(city => arr.push((`${city}, ${country.country}`).toLowerCase()))
+      })
+      setCountries(arr);
+>>>>>>> 6fbfe4d037e9548fec847c64231a6f00a8b4c19c
     }
     const filter = cities
       .filter((city) => {
@@ -53,6 +65,13 @@ export default function Home() {
     
   }
 
+  const onChangeSearchValue = (e) => {
+    const data = countries.filter(country => country.toLowerCase().startsWith(e.target.value)).slice(0, 4)
+
+    setfilteredCountries(data);
+  }
+
+
   return (
     <div className="relative h-screen overflow-hidden">
       {/* {
@@ -66,9 +85,16 @@ export default function Home() {
             src="day.png"
           ></img>
 
+<<<<<<< HEAD
           <div className=" w-[567px] h-[80px] rounded-[48px] bg-white flex absolute left-[200px] top-[60px] shadow-xl z-10">
             <svg
               className="bg-white rounded-[48px] relative top-[16px] left-5"
+=======
+          <img className="absolute left-[280px] top-[90px] bg-" src="day.png"></img>
+
+          <div className="w-[567px] h-[80px] rounded-[48px] bg-white flex absolute left-[200px] top-[60px] shadow-xl z-10">
+            <svg className="bg-white rounded-[48px] relative top-[16px] left-5"
+>>>>>>> 6fbfe4d037e9548fec847c64231a6f00a8b4c19c
               xmlns="http://www.w3.org/2000/svg"
               width="48"
               height="48"
@@ -82,6 +108,7 @@ export default function Home() {
                 />
               </g>
             </svg>
+<<<<<<< HEAD
             <input
               className=" py-2 px-1 bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10"
               type="search"
@@ -94,7 +121,16 @@ export default function Home() {
               filteredCountries.map((city, index) => {
                 return <div onClick={() => onSelectCity(index)} key={city + index}>{city}</div>;
               })}
+=======
+            <input className=" py-2 px-1 bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10" type="search" placeholder="Search" onChange={onChangeSearchValue}></input>
+            
+            <div className="absolute z-20 bg-white">
+              <div>{filteredCountries.map((country, index) => <div key={country + index}>{country}</div>)}</div>
+            
+            </div>
+>>>>>>> 6fbfe4d037e9548fec847c64231a6f00a8b4c19c
           </div>
+
 
           {/* Day container */}
           <div className="w-[414px] h-[828px] rounded-[50px] backdrop-blur-[12px] shadow-xl p-[40px] z-10">
