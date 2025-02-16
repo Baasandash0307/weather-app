@@ -1,32 +1,74 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
 
-
 export default function Home() {
-  const [countries, setCountries] = useState();
-  cosnt [number, setNumber] = useState(0);
+  const [cities, setCities] = useState([]);
+  const [filteredCountries, setfilteredCountries] = useState([]);
+  const [currentWeather, setCurrentWeather] = useState(null);
+  const [selectedCity, useSelectedCity] = useState('ulaanbaatar')
 
   useEffect(() => {
-    const getData = async () => {
-      const response = await fetch('https://countriesnow.space/api/v0.1/countries')
+    const getSelectedCityWeather = async () => {
+      const response = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=5900ec56aae31997b9187834febb7e83${selectedCity}`);
+      const weather = await response.json();
+      setCurrentWeather(weather)
+    };
+    getSelectedCityWeather()
+  }, []);
+
+  useEffect(() => {
+    const getCities = async () => {
+      const response = await fetch(
+        "https://countriesnow.space/api/v0.1/countries"
+      );
 
       const countries = await response.json();
-      setCountries(countries.data)
+
+      const arr = [];
+
+      countries.data.map((country) => {
+        country.cities.map((city) => [arr.push(`${city}, ${country.country}`)]);
+      });
+
+      setCities(arr);
+    };
+    getCities();
+  }, []);
+
+  const filterByCityName = (event) => {
+    if (event.target.value == "") {
+      setfilteredCountries([]);
+      return;
     }
-    getData()
-  }, [])
+    const filter = cities
+      .filter((city) => {
+        return city.toLowerCase().startsWith(event.target.value.toLowerCase());
+      })
+      .slice(0, 4);
+    setfilteredCountries(filter);
+  };
+
+  const onSelectCity = (index) => {
+    console.log(filteredCountries[index]);
+    
+  }
 
   return (
     <div className="relative h-screen overflow-hidden">
-
+      {/* {
+        currentWeather && JSON.stringify(currentWeather, null, 2)
+      } */}
       <div>
         {/* zuun tal */}
         <div className="w-[50%] h-[1100px] bg-white flex justify-center items-center pt-2">
+          <img
+            className="absolute left-[280px] top-[90px] bg-"
+            src="day.png"
+          ></img>
 
-          <img className="absolute left-[280px] top-[90px]" src="day.png"></img>
-
-          <div className="w-[567px] h-[80px] rounded-[48px] bg-white flex absolute left-[200px] top-[60px] shadow-xl z-10">
-            <svg className="bg-white rounded-[48px] relative top-[16px] left-5"
+          <div className=" w-[567px] h-[80px] rounded-[48px] bg-white flex absolute left-[200px] top-[60px] shadow-xl z-10">
+            <svg
+              className="bg-white rounded-[48px] relative top-[16px] left-5"
               xmlns="http://www.w3.org/2000/svg"
               width="48"
               height="48"
@@ -40,16 +82,30 @@ export default function Home() {
                 />
               </g>
             </svg>
-            <input className="bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10" type="search" placeholder="Search"></input>
+            <input
+              className=" py-2 px-1 bg-white w-[520px] rounded-[48px] h-[80px] border-none text-[30px] relative left-10 outline-none z-10"
+              type="search"
+              placeholder="Search"
+              onChange={filterByCityName}
+            ></input>
+          </div>
+          <div className="absolute z-20 left-[200px] top-[140px]">
+            {Boolean(filteredCountries.length) &&
+              filteredCountries.map((city, index) => {
+                return <div onClick={() => onSelectCity(index)} key={city + index}>{city}</div>;
+              })}
           </div>
 
           {/* Day container */}
           <div className="w-[414px] h-[828px] rounded-[50px] backdrop-blur-[12px] shadow-xl p-[40px] z-10">
-            <p className="text-gray-600">February 10, 2025</p>
-            <h1 className="text-[50px] font-bold">Ulaanbaatar</h1>
+            <p className="text-gray-600">ognoo</p>
+            <h1 className="text-[50px] font-bold">asdasd</h1>
 
             <div className="flex justify-center">
-              <img src="sun.png" className="w-[274px] h-[274px] mt-[30px]"></img>
+              <img
+                src="sun.png"
+                className="w-[274px] h-[274px] mt-[30px]"
+              ></img>
             </div>
             <div className="flex justify-center">
               <p className="text-[120px] font-extrabold mt-[20px]">-16°</p>
@@ -62,30 +118,44 @@ export default function Home() {
               <img src="user.png"></img>
             </div>
           </div>
-
         </div>
-
-
 
         {/* baruun tal */}
         <div className="w-[50%] h-[1100px] bg-gray-900 absolute right-px top-px flex justify-center items-center pt-2 ">
-
-          <img className="absolute right-[290px] bottom-[70px] w-[180px] h-[180px]" src="eclipse.png"></img>
+          <img
+            className="absolute right-[290px] bottom-[70px] w-[180px] h-[180px]"
+            src="eclipse.png"
+          ></img>
 
           <div className="w-[414px] h-[828px] rounded-[50px] backdrop-blur-[12px] shadow-xl p-[40px] z-10">
             <p className="text-gray-300">February 10, 2025</p>
             <h1 className="text-[50px] text-gray-300 font-bold">Ulaanbaatar</h1>
 
             <div className="flex justify-center">
-              <img src="moon.png" className="w-[274px] h-[274px] mt-[30px]"></img>
+              <img
+                src="moon.png"
+                className="w-[274px] h-[274px] mt-[30px]"
+              ></img>
             </div>
             <div className="flex justify-center">
-              <p className="text-[120px] text-gray-300 font-extrabold mt-[20px]">-16°</p>
+              <p className="text-[120px] text-gray-300 font-extrabold mt-[20px]">
+                -16°
+              </p>
             </div>
             <p className="text-[#FF8E27] font-bold">Freezing fog</p>
             <div className="flex justify-between mt-[40px]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <path d="M5.92428 12.541L13.9243 4.8743C15.0847 3.76225 16.9153 3.76225 18.0757 4.8743L26.0757 12.541C26.6662 13.1068 27 13.8892 27 14.7069V25C27 26.6569 25.6569 28 24 28H22H19H16H13H10H8C6.34315 28 5 26.6569 5 25V14.7069C5 13.8892 5.33385 13.1068 5.92428 12.541Z" stroke="#F9FAFB" strokeWidth="2" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+              >
+                <path
+                  d="M5.92428 12.541L13.9243 4.8743C15.0847 3.76225 16.9153 3.76225 18.0757 4.8743L26.0757 12.541C26.6662 13.1068 27 13.8892 27 14.7069V25C27 26.6569 25.6569 28 24 28H22H19H16H13H10H8C6.34315 28 5 26.6569 5 25V14.7069C5 13.8892 5.33385 13.1068 5.92428 12.541Z"
+                  stroke="#F9FAFB"
+                  strokeWidth="2"
+                />
               </svg>
               <img src="pin.png"></img>
               <img src="heart.png"></img>
